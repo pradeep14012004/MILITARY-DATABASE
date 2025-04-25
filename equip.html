@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Military Equipment</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-color: #222; /* Darker background for sections */
+            --dark-color: #000; /* Black background */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-color); /* Black background */
+            color: #fff; /* White text */
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #111; /* Darker black for container */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #fff; /* White text */
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .form-container, .data-container {
+            background-color: #222; /* Darker black for sections */
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #fff; /* White text for labels */
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #444; /* Dark border */
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #222; /* Dark background for inputs */
+            color: #fff; /* White text for inputs */
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #222; /* Dark background for table */
+            color: #fff; /* White text for table */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #444; /* Darker border */
+        }
+
+        th {
+            background-color: #333; /* Darker header background */
+            color: #fff; /* White text for headers */
+        }
+
+        tr:hover {
+            background-color: #333; /* Hover effect for rows */
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: #222; /* Darker black for stat cards */
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            color: #fff; /* White text */
+        }
+
+        .stat-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .active-stat {
+            color: var(--success-color);
+        }
+
+        .inactive-stat {
+            color: var(--danger-color);
+        }
+
+        .maintenance-stat {
+            color: var(--warning-color);
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #444; /* Dark border */
+            border-radius: 4px;
+            background-color: #222; /* Dark background for search input */
+            color: #fff; /* White text for search input */
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-style: italic;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        @media (max-width: 992px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Military Database</h1>
+            <p>Manage and track military equipment inventory</p>
+        </header>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Active Equipment</h3>
+                <p id="active-count" class="active-stat">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Inactive Equipment</h3>
+                <p id="inactive-count" class="inactive-stat">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Under Maintenance</h3>
+                <p id="maintenance-count" class="maintenance-stat">0</p>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <div class="form-container">
+                <h2 id="form-title">Add New Equipment</h2>
+                <form id="equipment-form">
+                    <div class="form-group">
+                        <label for="equipment-id">Equipment ID</label>
+                        <input type="number" id="equipment-id" placeholder="Enter equipment ID">
+                        <div id="id-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Equipment Type</label>
+                        <input type="text" id="type" placeholder="Enter equipment type" required>
+                        <div id="type-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="serial-number">Serial Number</label>
+                        <input type="text" id="serial-number" placeholder="Enter serial number" required>
+                        <div id="serial-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Under Maintenance">Under Maintenance</option>
+                        </select>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" id="save-btn" class="btn-primary">Add Equipment</button>
+                        <button type="button" id="reset-btn" class="btn-warning">Reset Form</button>
+                    </div>
+                </form>
+                <div id="success-message" class="success-message" style="display: none;"></div>
+            </div>
+
+            <div class="data-container">
+                <h2>Equipment Inventory</h2>
+                
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search by category, type, model or serial number...">
+                    <button id="search-btn" class="btn-primary">Search</button>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="filter-status">Filter by Status:</label>
+                        <select id="filter-status">
+                            <option value="">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Under Maintenance">Under Maintenance</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <table id="equipment-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Serial Number</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="equipment-list">
+                        <!-- Equipment data will be dynamically populated here -->
+                    </tbody>
+                </table>
+                <div id="no-data" class="no-data">No equipment data available.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Equipment class to represent equipment objects
+        class Equipment {
+            constructor(id, category, type, model, serialNumber, status) {
+                this.id = id;
+                this.category = category;
+                this.type = type;
+                this.model = model;
+                this.serialNumber = serialNumber;
+                this.status = status;
+            }
+        }
+
+        // Equipment data structure
+        const EQUIPMENT_DATA = {
+            "Infantry Weapons": {
+                "Assault Rifles": ["M4A1 Carbine", "AK-47", "HK416", "FN SCAR", "Tavor X95", "Steyr AUG", "G36C"],
+                "Pistols": ["Glock 19", "Beretta M9", "SIG Sauer P320", "Colt M1911", "HK USP", "FN Five-Seven"],
+                "Sniper Rifles": ["M24", "Barrett M82", "M110 SASS", "CheyTac M200", "Dragunov SVD", "McMillan TAC-50"],
+                "Machine Guns": ["M249 SAW", "M240B", "MK19 Grenade Launcher", "M2 Browning", "PKM", "Minigun"],
+                "Shotguns": ["Benelli M4", "Mossberg 590", "Remington 870", "SPAS-12", "AA-12", "KSG"],
+                "Anti-Tank Weapons": ["Javelin", "AT4", "RPG-7", "TOW Missile System", "Carl Gustaf", "SMAW"]
+            },
+            "Vehicles": {
+                "Tanks": ["M1 Abrams", "Leopard 2", "T-90", "Challenger 2", "Merkava Mk IV", "Type 99"],
+                "Armored Personnel Carriers": ["M113", "Stryker", "Bradley IFV", "BTR-80", "Boxer", "Namer"],
+                "Light Tactical Vehicles": ["HMMWV (Humvee)", "JLTV", "MRAP", "LAV-25", "Iveco LMV", "Fennek"],
+                "Artillery": ["M109 Howitzer", "MLRS", "HIMARS", "BM-21 Grad", "Panzerhaubitze 2000", "CAESAR"]
+            },
+            "Aircraft": {
+                "Fighter Jets": ["F-35 Lightning II", "F-22 Raptor", "F-16 Fighting Falcon", "F/A-18 Hornet", "Eurofighter Typhoon", "Su-35"],
+                "Bombers": ["B-2 Spirit", "B-1B Lancer", "B-52 Stratofortress", "Tu-160", "Tu-95"],
+                "Transport Aircraft": ["C-17 Globemaster III", "C-130 Hercules", "An-124", "A400M Atlas"],
+                "Helicopters": ["AH-64 Apache", "UH-60 Black Hawk", "CH-47 Chinook", "Mi-24 Hind", "NH90", "AW101"],
+                "Unmanned Aerial Vehicles": ["MQ-9 Reaper", "RQ-4 Global Hawk", "MQ-1C Gray Eagle", "RQ-7 Shadow", "Bayraktar TB2"]
+            },
+            "Naval Vessels": {
+                "Aircraft Carriers": ["Nimitz-class", "Gerald R. Ford-class", "Queen Elizabeth-class", "Charles de Gaulle", "Admiral Kuznetsov"],
+                "Destroyers": ["Arleigh Burke-class", "Zumwalt-class", "Type 45 Daring-class", "Kolkata-class"],
+                "Submarines": ["Virginia-class", "Ohio-class", "Astute-class", "Borei-class", "Type 212"],
+                "Amphibious Assault Ships": ["Wasp-class", "America-class", "Mistral-class", "Juan Carlos I-class"],
+                "Patrol Boats": ["Cyclone-class", "Mark VI", "Sentinel-class", "Ambassador MK III"]
+            },
+            "Communications": {
+                "Radios": ["AN/PRC-152", "AN/PRC-117G", "SINCGARS", "Harris Falcon III", "Thales MBITR"],
+                "Satellite Systems": ["MUOS", "AEHF", "SATCOM", "Iridium", "Inmarsat"],
+                "Field Telephones": ["TA-1", "TA-312", "TA-838", "TA-954", "SB-22"]
+            },
+            "Reconnaissance": {
+                "Radar Systems": ["AN/TPQ-53", "AN/MPQ-64 Sentinel", "AN/TPS-80 G/ATOR", "AESA", "MEADS"],
+                "Night Vision": ["PVS-14", "PVS-15", "ENVG-B", "FLIR", "Thermal Sights"],
+                "Surveillance Drones": ["RQ-11 Raven", "Scan Eagle", "Puma AE", "Black Hornet Nano", "Switchblade"]
+            },
+            "Electronics": {
+                "Electronic Warfare": ["AN/ALQ-99", "AN/ALQ-131", "Growler EA-18G", "CREW Duke", "Krasukha"],
+                "Cyber Systems": ["DCGS", "Cyber Command Tools", "Network Defense Systems"],
+                "Command & Control": ["FBCB2", "GCCS", "JCR", "AWACS", "JSTARS"]
+            },
+            "Protection & Safety": {
+                "Body Armor": ["IOTV", "Plate Carrier", "ESAPI Plates", "Ballistic Helmet", "Tactical Vest"],
+                "NBC Equipment": ["MOPP Suit", "Gas Mask", "CBRN Detector", "Decontamination Kit", "Dosimeter"],
+                "EOD Equipment": ["Bomb Suit", "Mine Detector", "Remote Manipulator", "TALON Robot", "PackBot"]
+            },
+            "Medical": {
+                "Field Medical": ["Combat Medic Bag", "IFAK", "Litter", "Field Surgical Kit", "Tactical Tourniquets"],
+                "Field Hospitals": ["MASH Unit", "Battalion Aid Station", "FRSS", "CSH", "Role 3 MMU"]
+            },
+            "Support & Logistics": {
+                "Field Kitchens": ["MKT", "CK", "KCLFF", "MTRCS"],
+                "Water Purification": ["TWPS", "LWP", "ROWPU", "WPS"],
+                "Power Generation": ["MEP-803A", "MEP-805B", "TQG", "AMMPS"]
+            }
+        };
+
+        // EquipmentManager class to handle equipment data operations
+        class EquipmentManager {
+            constructor() {
+                this.equipment = [];
+                this.nextId = 1;
+                this.loadFromLocalStorage();
+            }
+
+            // Load data from localStorage
+            loadFromLocalStorage() {
+                const storedEquipment = localStorage.getItem('equipmentData');
+                if (storedEquipment) {
+                    this.equipment = JSON.parse(storedEquipment);
+                    this.updateNextId();
+                }
+            }
+
+            // Save data to localStorage
+            saveToLocalStorage() {
+                localStorage.setItem('equipmentData', JSON.stringify(this.equipment));
+            }
+
+            // Update the next ID based on existing equipment
+            updateNextId() {
+                if (this.equipment.length > 0) {
+                    const maxId = Math.max(...this.equipment.map(item => item.equipment_id));
+                    this.nextId = maxId + 1;
+                } else {
+                    this.nextId = 1;
+                }
+            }
+
+            // Add new equipment
+            addEquipment(type, serialNumber, status) {
+                return fetch('http://localhost:3001/api/equipment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type, serial_number: serialNumber, status })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            if (response.status === 400) {
+                                throw new Error('Serial number already exists');
+                            }
+                            throw new Error('Failed to add equipment');
+                        }
+                        return response.text();
+                    })
+                    .then(message => {
+                        console.log(message);
+                        this.loadEquipmentFromBackend(); // Refresh the list
+                        return { success: true };
+                    })
+                    .catch(error => {
+                        console.error('Error adding equipment:', error);
+                        return { success: false, message: error.message };
+                    });
+            }
+
+            // Update existing equipment
+            updateEquipment(id, type, serialNumber, status) {
+                return fetch(`http://localhost:3001/api/equipment/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type, serial_number: serialNumber, status })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to update equipment');
+                        }
+                        return response.text();
+                    })
+                    .then(message => {
+                        console.log(message);
+                        this.loadEquipmentFromBackend(); // Refresh the list
+                        return { success: true };
+                    })
+                    .catch(error => {
+                        console.error('Error updating equipment:', error);
+                        return { success: false, message: 'Error updating equipment' };
+                    });
+            }
+
+            // Delete equipment
+            deleteEquipment(id) {
+                return fetch(`http://localhost:3001/api/equipment/${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            if (response.status === 404) {
+                                throw new Error('Equipment not found');
+                            }
+                            throw new Error('Failed to delete equipment');
+                        }
+                        return response.text();
+                    })
+                    .then(message => {
+                        console.log(message);
+                        this.loadEquipmentFromBackend(); // Refresh the list
+                        return { success: true };
+                    })
+                    .catch(error => {
+                        console.error('Error deleting equipment:', error);
+                        return { success: false, message: error.message };
+                    });
+            }
+
+            // Get equipment by ID
+            getEquipmentById(id) {
+                return this.equipment.find(item => item.equipment_id === id) || null;
+            }
+
+            // Get all equipment
+            getAllEquipment() {
+                return [...this.equipment];
+            }
+
+            // Check if serial number exists
+            isSerialNumberExists(serialNumber) {
+                return this.equipment.some(item => item.serial_number === serialNumber);
+            }
+
+            // Get equipment statistics
+            getStatistics() {
+                const activeCount = this.equipment.filter(item => item.status === 'Active').length;
+                const inactiveCount = this.equipment.filter(item => item.status === 'Inactive').length;
+                const maintenanceCount = this.equipment.filter(item => item.status === 'Under Maintenance').length;
+
+                return { activeCount, inactiveCount, maintenanceCount };
+            }
+        }
+
+        // UI Controller to handle DOM interactions
+        class UIController {
+            constructor(equipmentManager) {
+                this.equipmentManager = equipmentManager;
+                this.isEditing = false;
+                this.currentId = null;
+                
+                // Form elements
+                this.equipmentForm = document.getElementById('equipment-form');
+                this.equipmentIdInput = document.getElementById('equipment-id');
+                this.typeInput = document.getElementById('type');
+                this.serialNumberInput = document.getElementById('serial-number');
+                this.statusInput = document.getElementById('status');
+                this.saveBtn = document.getElementById('save-btn');
+                this.resetBtn = document.getElementById('reset-btn');
+                this.formTitle = document.getElementById('form-title');
+                this.typeError = document.getElementById('type-error');
+                this.serialError = document.getElementById('serial-error');
+                this.successMessage = document.getElementById('success-message');
+                
+                // Table elements
+                this.equipmentList = document.getElementById('equipment-list');
+                this.noDataMsg = document.getElementById('no-data');
+                
+                // Stats elements
+                this.activeCount = document.getElementById('active-count');
+                this.inactiveCount = document.getElementById('inactive-count');
+                this.maintenanceCount = document.getElementById('maintenance-count');
+                
+                this.initEventListeners();
+                this.refreshEquipmentList();
+                this.updateStatistics();
+                this.loadEquipmentFromBackend();
+            }
+            
+            // Initialize event listeners
+            initEventListeners() {
+                // Form submission
+                this.equipmentForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleFormSubmit();
+                });
+                
+                // Reset button
+                this.resetBtn.addEventListener('click', () => {
+                    this.resetForm();
+                });
+            }
+            
+            // Handle form submission
+            handleFormSubmit() {
+                const id = parseInt(this.equipmentIdInput.value, 10) || null;
+                const type = this.typeInput.value.trim();
+                const serialNumber = this.serialNumberInput.value.trim();
+                const status = this.statusInput.value;
+
+                if (this.isEditing) {
+                    // Update existing equipment
+                    this.equipmentManager.updateEquipment(id, type, serialNumber, status)
+                        .then(result => {
+                            if (result.success) {
+                                this.showSuccessMessage('Equipment updated successfully!');
+                                this.resetForm();
+                                this.refreshEquipmentList();
+                                this.updateStatistics();
+                            } else {
+                                this.showError(result.message);
+                            }
+                        });
+                } else {
+                    // Add new equipment
+                    this.equipmentManager.addEquipment(type, serialNumber, status)
+                        .then(result => {
+                            if (result.success) {
+                                this.showSuccessMessage('Equipment added successfully!');
+                                this.resetForm();
+                                this.refreshEquipmentList();
+                                this.updateStatistics();
+                            } else {
+                                this.showError(result.message);
+                            }
+                        });
+                }
+            }
+            
+            // Refresh equipment list
+            refreshEquipmentList() {
+                const equipmentList = this.equipmentManager.getAllEquipment();
+                this.populateEquipmentList(equipmentList);
+            }
+            
+            // Populate equipment list in the table
+            populateEquipmentList(equipmentList) {
+                this.equipmentList.innerHTML = ''; // Clear existing rows
+                if (equipmentList.length === 0) {
+                    this.noDataMsg.style.display = 'block'; // Show "No data" message
+                } else {
+                    this.noDataMsg.style.display = 'none'; // Hide "No data" message
+                    equipmentList.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${item.equipment_id}</td>
+                            <td>${item.type}</td>
+                            <td>${item.serial_number}</td>
+                            <td class="${this.getStatusClass(item.status)}">${item.status}</td>
+                            <td>
+                                <button class="btn-edit" data-id="${item.equipment_id}">Edit</button>
+                                <button class="btn-delete" data-id="${item.equipment_id}">Delete</button>
+                            </td>
+                        `;
+                        this.equipmentList.appendChild(row);
+
+                        // Add event listeners for Edit and Delete buttons
+                        row.querySelector('.btn-edit').addEventListener('click', (e) => {
+                            this.handleEditButtonClick(e.target.dataset.id);
+                        });
+                        row.querySelector('.btn-delete').addEventListener('click', (e) => {
+                            this.handleDeleteButtonClick(e.target.dataset.id);
+                        });
+                    });
+                }
+            }
+            
+            // Reset form fields
+            resetForm() {
+                this.equipmentIdInput.value = '';
+                this.typeInput.value = '';
+                this.serialNumberInput.value = '';
+                this.statusInput.value = 'Active';
+                this.formTitle.textContent = 'Add New Equipment';
+                this.saveBtn.textContent = 'Add Equipment';
+                this.isEditing = false;
+                this.currentId = null;
+                this.typeError.textContent = '';
+                this.serialError.textContent = '';
+            }
+            
+            // Show success message
+            showSuccessMessage(message) {
+                this.successMessage.textContent = message;
+                this.successMessage.style.display = 'block';
+                setTimeout(() => {
+                    this.successMessage.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Show error message
+            showError(message) {
+                this.serialError.textContent = message;
+                this.serialError.style.display = 'block';
+                setTimeout(() => {
+                    this.serialError.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Get status class for table row
+            getStatusClass(status) {
+                switch (status) {
+                    case 'Active':
+                        return 'active-stat';
+                    case 'Inactive':
+                        return 'inactive-stat';
+                    case 'Under Maintenance':
+                        return 'maintenance-stat';
+                    default:
+                        return '';
+                }
+            }
+            
+            // Handle edit button click
+            handleEditButtonClick(id) {
+                const equipment = this.equipmentManager.getEquipmentById(parseInt(id, 10));
+                if (equipment) {
+                    this.isEditing = true;
+                    this.currentId = equipment.equipment_id;
+                    this.equipmentIdInput.value = equipment.equipment_id;
+                    this.typeInput.value = equipment.type;
+                    this.serialNumberInput.value = equipment.serial_number;
+                    this.statusInput.value = equipment.status;
+                    this.formTitle.textContent = 'Edit Equipment';
+                    this.saveBtn.textContent = 'Update Equipment';
+                }
+            }
+            
+            // Handle delete button click
+            handleDeleteButtonClick(id) {
+                this.equipmentManager.deleteEquipment(parseInt(id, 10))
+                    .then(result => {
+                        if (result.success) {
+                            this.showSuccessMessage('Equipment deleted successfully!');
+                            this.refreshEquipmentList();
+                            this.updateStatistics();
+                        } else {
+                            this.showError(result.message);
+                        }
+                    });
+            }
+            
+            // Update statistics
+            updateStatistics() {
+                const stats = this.equipmentManager.getStatistics();
+                this.activeCount.textContent = stats.activeCount;
+                this.inactiveCount.textContent = stats.inactiveCount;
+                this.maintenanceCount.textContent = stats.maintenanceCount;
+            }
+
+            // Load equipment data from backend
+            loadEquipmentFromBackend() {
+                fetch('http://localhost:3001/api/equipment')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch equipment data');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.equipmentManager.equipment = data;
+                        this.refreshEquipmentList();
+                        this.updateStatistics();
+                    })
+                    .catch(error => console.error('Error fetching equipment:', error));
+            }
+        }
+        
+        // Initialize EquipmentManager and UIController
+        const equipmentManager = new EquipmentManager();
+        const uiController = new UIController(equipmentManager);
+        this.loadEquipmentFromBackend();
+
+        // Remove any event listeners or logic related to filter-category and filter-type
+        document.getElementById('filter-category')?.remove();
+        document.getElementById('filter-type')?.remove();
+    </script>
+</body>
+</html>
