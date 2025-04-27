@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Military Missions</title>
+  <title>Military Database</title>
   <style>
     :root {
       --primary-color: #3498db;
@@ -247,7 +247,7 @@
 </head>
 <body>
   <header>
-    <h1>Military Missions</h1>
+    <h1>MILITARY DATABASE</h1>
   </header>
 
   <main>
@@ -267,10 +267,18 @@
           <option value="Completed">Completed</option>
           <option value="Cancelled">Cancelled</option>
         </select>
-        <label for="serviceid">Service ID:</label>
-        <input type="number" id="serviceid" required>
-        <label for="assignment_id">Assignment ID:</label>
-        <input type="number" id="assignment_id" required>
+        <div class="form-group">
+          <label for="serviceid">Service ID:</label>
+          <select id="serviceid" required>
+            <!-- Options will be populated dynamically -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="assignment_id">Assignment ID:</label>
+          <select id="assignment_id" required>
+            <!-- Options will be populated dynamically -->
+          </select>
+        </div>
         <button type="submit" id="submitBtn">Add Mission</button>
         <button type="button" id="cancelBtn" style="display:none;">Cancel</button>
       </form>
@@ -409,7 +417,45 @@
       cancelBtn.style.display = 'none';
     }
 
-    document.addEventListener('DOMContentLoaded', fetchMissions);
+    function populateServiceIdDropdown() {
+      fetch('http://localhost:3001/api/soldiers') // Replace with the actual API endpoint for soldiers
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch service IDs');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const serviceidInput = document.getElementById('serviceid');
+          serviceidInput.innerHTML = data.map(soldier =>
+            `<option value="${soldier.serviceid}">${soldier.serviceid} (${soldier.rank})</option>`
+          ).join('');
+        })
+        .catch(error => console.error('Error fetching service IDs:', error));
+    }
+
+    function populateAssignmentIdDropdown() {
+      fetch('http://localhost:3001/api/assignments') // Replace with the actual API endpoint for assignments
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch assignment IDs');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const assignmentIdInput = document.getElementById('assignment_id');
+          assignmentIdInput.innerHTML = data.map(assignment =>
+            `<option value="${assignment.assignment_id}">${assignment.assignment_id}</option>`
+          ).join('');
+        })
+        .catch(error => console.error('Error fetching assignment IDs:', error));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      populateServiceIdDropdown(); // Fetch and populate Service IDs
+      populateAssignmentIdDropdown(); // Fetch and populate Assignment IDs
+      fetchMissions(); // Fetch and render missions
+    });
   </script>
 </body>
 </html>
