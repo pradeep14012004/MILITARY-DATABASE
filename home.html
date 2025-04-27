@@ -156,7 +156,7 @@
             z-index: 1;
         }
 
-        /* Forces Section */
+      /
         .forces-section {
             padding: 60px 40px;
             background-color: #0a0a0a;
@@ -231,7 +231,7 @@
             background-color: #f00;
         }
 
-        /* Units Section */
+        
         .units-section {
             padding: 60px 0;
             background-color: #000;
@@ -595,11 +595,11 @@
         </div>
     </section>
 
-    <!-- Indian Forces Section -->
+
     <section class="forces-section">
         <h2 class="section-title">INDIAN ARMED FORCES</h2>
         <div class="forces-container">
-            <!-- Army Card -->
+            
             <div class="force-card">
                 <img src=https://www.uxdt.nic.in/wp-content/uploads/2020/06/India_Army-Preview.png?x76268 alt="Indian Army" class="force-image">
                 <div class="force-content">
@@ -609,7 +609,7 @@
                 </div>
             </div>
             
-            <!-- Navy Card -->
+        
             <div class="force-card">
                 <img src=https://www.financialexpress.com/wp-content/uploads/2022/09/imgonline-com-ua-resize-USMiY42wlt-1.jpg?w=620 alt="Indian Navy" class="force-image">
                 <div class="force-content">
@@ -619,7 +619,7 @@
                 </div>
             </div>
             
-            <!-- Air Force Card -->
+            
             <div class="force-card">
                 <img src=https://i.pinimg.com/736x/45/4a/82/454a820e3f981261e517805ce161980f.jpg alt="Indian Air Force" class="force-image">
                 <div class="force-content">
@@ -631,7 +631,7 @@
         </div>
     </section>
 
-    <!-- Units Section -->
+ 
     <section class="units-section" id="units-section">
         <h2 class="section-title">INDIAN MILITARY UNITS</h2>
         
@@ -643,11 +643,11 @@
         </div>
         
         <div class="units-container" id="units-container">
-            <!-- Units will be dynamically added here by JavaScript -->
+          
         </div>
     </section>
 
-    <!-- Unit Details Modal -->
+    
     <div class="unit-details-modal" id="unit-modal">
         <div class="modal-content">
             <span class="close-modal" id="close-modal">×</span>
@@ -661,7 +661,7 @@
                 </div>
             </div>
             <div class="modal-body" id="modal-body">
-                <!-- Content will be dynamically added here -->
+               
             </div>
         </div>
     </div>
@@ -672,7 +672,7 @@
     </footer>
 
     <script>
-        // Session timeout after 15 minutes of inactivity
+       
 let timeout;
 function resetTimer() {
     clearTimeout(timeout);
@@ -685,11 +685,11 @@ function resetTimer() {
 document.addEventListener('mousemove', resetTimer);
 document.addEventListener('keypress', resetTimer);
 resetTimer();
-        // Authentication check
+        
 if(sessionStorage.getItem('authenticated') !== 'true') {
     window.location.href = 'index.html';
 }
-// Prevent back navigation after logout
+
 window.history.pushState(null, null, window.location.href);
 window.onpopstate = function() {
     if(sessionStorage.getItem('authenticated') !== 'true') {
@@ -697,14 +697,14 @@ window.onpopstate = function() {
     }
 };
 
-// Add logout functionality
+
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('logoutButton').addEventListener('click', function() {
         sessionStorage.removeItem('authenticated');
         window.location.href = 'index.html';
     });
 });
-        // Unit data for all branches
+        
         const unitsData = {
             army: [
                 {
@@ -880,7 +880,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
         };
 
-        // Function to create unit card HTML
+        
         function createUnitCard(unit, branch) {
             return `
                 <div class="unit-card" data-branch="${branch}" data-id="${unit.id}">
@@ -897,7 +897,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
 
-        // Function to render units based on branch
+        
         function renderUnits(branch) {
             const container = document.getElementById('units-container');
             container.innerHTML = '';
@@ -910,7 +910,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Add event listeners to new cards
+        
             document.querySelectorAll('.view-details').forEach(button => {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -920,7 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Function to show unit details in modal
+       
         function showUnitDetails(unitId) {
             const unit = Object.values(unitsData).flat().find(u => u.id === unitId);
             const modal = document.getElementById('unit-modal');
@@ -953,10 +953,10 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = 'flex';
         }
 
-        // Initial render
+        
         renderUnits('all');
 
-        // Branch selector functionality
+       
         document.querySelectorAll('.branch-button').forEach(button => {
             button.addEventListener('click', () => {
                 document.querySelectorAll('.branch-button').forEach(btn => btn.classList.remove('active'));
@@ -965,12 +965,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Modal close functionality
+        
         document.getElementById('close-modal').addEventListener('click', () => {
             document.getElementById('unit-modal').style.display = 'none';
         });
 
-        // Close modal when clicking outside
+       
         window.addEventListener('click', (e) => {
             if (e.target === document.getElementById('unit-modal')) {
                 document.getElementById('unit-modal').style.display = 'none';
