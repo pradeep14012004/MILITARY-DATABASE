@@ -499,8 +499,6 @@
             { unit_id: 5, name: "5th Air Wing" }
         ];
         
-        
-        
         // Utility functions
         function formatDate(dateString) {
             if (!dateString) return "";
@@ -534,94 +532,58 @@
         
         // Refresh table data
         function refreshTable() {
-            const tableBody = document.getElementById('soldier-data');
-            tableBody.innerHTML = '';
-            
-            soldiers.forEach(soldier => {
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${soldier.serviceid}</td>
-                    <td>${soldier.first_name} ${soldier.last_name}</td>
-                    <td>${soldier.rank}</td>
-                    <td>${soldier.branch}</td>
-                    <td>${soldier.unit_id}</td>
-                    <td>${soldier.status}</td>
-                    <td class="action-buttons">
-                        <button class="view-btn" data-id="${soldier.serviceid}">View</button>
-                        <button class="edit-btn" data-id="${soldier.serviceid}">Edit</button>
-                        <button class="delete-btn" data-id="${soldier.serviceid}">Delete</button>
-                    </td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-            
-            // Add event listeners to the buttons
-            document.querySelectorAll('.view-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = parseInt(e.target.getAttribute('data-id'));
-                    const soldier = soldiers.find(s => s.serviceid === id);
-                    if (soldier) {
-                        alert(`
-                            ID: ${soldier.serviceid}
-                            Name: ${soldier.first_name} ${soldier.last_name}
-                            DOB: ${formatDate(soldier.date_of_birth)}
-                            Gender: ${soldier.gender || 'Not specified'}
-                            Rank: ${soldier.rank}
-                            Branch: ${soldier.branch}
-                            Unit ID: ${soldier.unit_id}
-                            Enlistment: ${formatDate(soldier.enlistment_date)}
-                            Discharge: ${soldier.discharge_date ? formatDate(soldier.discharge_date) : 'N/A'}
-                            Status: ${soldier.status}
-                            Blood Type: ${soldier.blood_type || 'Not specified'}
-                            Location: ${soldier.last_known_location || 'Not specified'}
-                        `);
+            fetch('http://localhost:3001/api/soldiers')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch soldiers');
                     }
-                });
-            });
-            
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = parseInt(e.target.getAttribute('data-id'));
-                    // Switch to update tab
-                    document.querySelector('.tab[data-tab="update"]').click();
-                    // Select the soldier
-                    document.getElementById('update-select-id').value = id;
-                    // Trigger the change event
-                    document.getElementById('update-select-id').dispatchEvent(new Event('change'));
-                });
-            });
-            
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const id = parseInt(e.target.getAttribute('data-id'));
-                    // Switch to delete tab
-                    document.querySelector('.tab[data-tab="delete"]').click();
-                    // Select the soldier
-                    document.getElementById('delete-select-id').value = id;
-                    // Trigger the change event
-                    document.getElementById('delete-select-id').dispatchEvent(new Event('change'));
-                });
-            });
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched Soldiers:', data); // Debugging: Log the fetched data
+                    soldiers = data; // Update the global soldiers array
+                    const tableBody = document.getElementById('soldier-data');
+                    tableBody.innerHTML = '';
+
+                    soldiers.forEach(soldier => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${soldier.serviceid}</td>
+                            <td>${soldier.first_name} ${soldier.last_name}</td>
+                            <td>${soldier.rank || 'N/A'}</td>
+                            <td>${soldier.branch || 'N/A'}</td>
+                            <td>${soldier.unit_id || 'N/A'}</td>
+                            <td>${soldier.status || 'N/A'}</td>
+                            <td class="action-buttons">
+                                <button class="view-btn" onclick="viewSoldier(${soldier.serviceid})">View</button>
+                                <button class="edit-btn" onclick="editSoldier(${soldier.serviceid})">Edit</button>
+                                <button class="delete-btn" onclick="deleteSoldier(${soldier.serviceid})">Delete</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+
+                    updateSelectOptions(); // Update dropdown options for Update and Delete
+                })
+                .catch(error => console.error('Error fetching soldiers:', error));
         }
         
         // Update select options in update and delete forms
         function updateSelectOptions() {
             const updateSelect = document.getElementById('update-select-id');
             const deleteSelect = document.getElementById('delete-select-id');
-            
+
             // Clear existing options except the first one
             updateSelect.innerHTML = '<option value="">-- Select a Soldier --</option>';
             deleteSelect.innerHTML = '<option value="">-- Select a Soldier --</option>';
-            
+
             soldiers.forEach(soldier => {
                 const option = document.createElement('option');
                 option.value = soldier.serviceid;
                 option.textContent = `${soldier.serviceid} - ${soldier.rank} ${soldier.first_name} ${soldier.last_name}`;
-                
+
                 const deleteOption = option.cloneNode(true);
-                
+
                 updateSelect.appendChild(option);
                 deleteSelect.appendChild(deleteOption);
             });
@@ -630,7 +592,7 @@
         // Handle form submissions
         document.getElementById('insert-form').addEventListener('submit', (e) => {
             e.preventDefault();
-        
+
             const newSoldier = {
                 first_name: document.getElementById('first-name').value,
                 last_name: document.getElementById('last-name').value,
@@ -643,21 +605,26 @@
                 discharge_date: document.getElementById('discharge-date').value || null,
                 status: document.getElementById('status').value,
                 blood_type: document.getElementById('blood-type').value || null,
-                last_known_location: document.getElementById('last-known-location').value || null,
+                last_known_location: document.getElementById('last-known-location').value || null
             };
-        
+
             fetch('http://localhost:3001/api/soldiers', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newSoldier),
             })
-                .then((response) => response.text())
-                .then((message) => {
-                    alert(message);
-                    fetchSoldiers();
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add soldier');
+                    }
+                    return response.json();
+                })
+                .then(message => {
+                    alert(message.message);
+                    refreshTable(); // Refresh the table
                     document.getElementById('insert-form').reset();
                 })
-                .catch((error) => console.error('Error adding soldier:', error));
+                .catch(error => console.error('Error adding soldier:', error));
         });
         
         // Handle update selection change
@@ -688,6 +655,11 @@
             e.preventDefault();
 
             const id = parseInt(document.getElementById('update-service-id').value);
+            if (!id) {
+                showNotification('Please select a soldier to update', 'error');
+                return;
+            }
+
             const updatedSoldier = {
                 first_name: document.getElementById('update-first-name').value,
                 last_name: document.getElementById('update-last-name').value,
@@ -700,7 +672,7 @@
                 discharge_date: document.getElementById('update-discharge-date').value || null,
                 status: document.getElementById('update-status').value,
                 blood_type: document.getElementById('update-blood-type').value || null,
-                last_known_location: document.getElementById('update-last-known-location').value || null,
+                last_known_location: document.getElementById('update-last-known-location').value || null
             };
 
             fetch(`http://localhost:3001/api/soldiers/${id}`, {
@@ -708,12 +680,23 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedSoldier),
             })
-                .then((response) => response.text())
-                .then((message) => {
-                    alert(message);
-                    fetchSoldiers();
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update soldier');
+                    }
+                    return response.json();
                 })
-                .catch((error) => console.error('Error updating soldier:', error));
+                .then(message => {
+                    alert(message.message);
+                    refreshTable(); // Refresh the table
+                    document.getElementById('update-form').reset();
+                    document.getElementById('update-select-id').value = '';
+                    showNotification('Soldier updated successfully!', 'success');
+
+                    // Switch to data tab
+                    document.querySelector('.tab[data-tab="data"]').click();
+                })
+                .catch(error => console.error('Error updating soldier:', error));
         });
         
         // Handle delete selection change
@@ -745,36 +728,67 @@
         // Handle delete confirmation
         document.getElementById('confirm-delete').addEventListener('click', () => {
             const id = parseInt(document.getElementById('delete-select-id').value);
-
             if (!id) {
-                alert('Please select a soldier to delete.');
+                showNotification('Please select a soldier to delete', 'error');
                 return;
             }
+            
+            const index = soldiers.findIndex(s => s.serviceid === id);
+            if (index !== -1) {
+                soldiers.splice(index, 1);
+                refreshTable();
+                updateSelectOptions();
+                
+                document.getElementById('soldier-to-delete-info').innerHTML = '';
+                document.getElementById('delete-select-id').value = '';
+                    showNotification('Soldier deleted successfully!', 'success');
+                }
 
-            fetch(`http://localhost:3001/api/soldiers/${id}`, {
-                method: 'DELETE',
-            })
-                .then((response) => response.text())
-                .then((message) => {
-                    alert(message);
-                    fetchSoldiers();
-                })
-                .catch((error) => console.error('Error deleting soldier:', error));
-        });
+                // Switch to data tab
+                document.querySelector('.tab[data-tab="data"]').click();
+            });
         
-        function fetchSoldiers() {
-            fetch('http://localhost:3001/api/soldiers')
-                .then((response) => response.json())
-                .then((data) => {
-                    soldiers = data;
-                    refreshTable();
-                    updateSelectOptions();
+        function deleteSoldier(id) {
+            if (confirm('Are you sure you want to delete this soldier?')) {
+                fetch(`http://localhost:3001/api/soldiers/${id}`, {
+                    method: 'DELETE',
                 })
-                .catch((error) => console.error('Error fetching soldiers:', error));
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete soldier');
+                        }
+                        return response.json();
+                    })
+                    .then(message => {
+                        alert(message.message);
+                        refreshTable(); // Refresh the table
+                        showNotification('Soldier deleted successfully!', 'success');
+                    })
+                    .catch(error => console.error('Error deleting soldier:', error));
+            }
         }
 
-        // Initialize sample data
-        initializeSampleData();
+        function viewSoldier(id) {
+            const soldier = soldiers.find(s => s.serviceid === id);
+            if (soldier) {
+                alert(`
+                    Service ID: ${soldier.serviceid}
+                    Name: ${soldier.first_name} ${soldier.last_name}
+                    Rank: ${soldier.rank}
+                    Branch: ${soldier.branch}
+                    Unit ID: ${soldier.unit_id}
+                    Status: ${soldier.status}
+                    Blood Type: ${soldier.blood_type || 'N/A'}
+                    Last Known Location: ${soldier.last_known_location || 'N/A'}
+                `);
+            } else {
+                showNotification('Soldier not found', 'error');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshTable(); // Fetch and display soldier records
+        });
     </script>
 </body>
 </html>
