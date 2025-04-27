@@ -153,7 +153,7 @@
     <div class="container">
         <h1>Military Database</h1>
         
-        <!-- Assignment Form -->
+       
         <div class="form-section">
             <h2>New Assignment Record</h2>
             <form id="assignmentForm">
@@ -161,13 +161,13 @@
                     <div class="form-group">
                         <label for="serviceid">Soldier ID:</label>
                         <select id="serviceid" required>
-                            <!-- Options will be populated dynamically -->
+                          
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="equipment_id">Equipment ID:</label>
                         <select id="equipment_id" required>
-                            <!-- Options will be populated dynamically -->
+                         
                         </select>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
             </form>
         </div>
 
-        <!-- Filter Section -->
+        
         <div class="form-section">
             <h2>Filter Assignments</h2>
             <div class="filter-section">
@@ -225,7 +225,7 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <!-- Assignment rows will be inserted here -->
+             
             </tbody>
         </table>
     </div>
@@ -241,7 +241,7 @@
         populateEquipmentDropdown();
 
         document.addEventListener('DOMContentLoaded', () => {
-            populateSoldierDropdown(); // Fetch and populate Soldier IDs
+            populateSoldierDropdown(); 
         });
 
         function handleSubmit(e) {
@@ -260,7 +260,7 @@
             const assignmentData = { serviceid, equipment_id, date_assigned, date_returned: date_returned || null };
 
             if (editingId === null) {
-                // Add new assignment
+               
                 fetch('http://localhost:3001/api/assignments', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -274,12 +274,12 @@
                     })
                     .then(data => {
                         alert('Assignment added successfully');
-                        fetchAndRenderTable(); // Refresh the table
+                        fetchAndRenderTable(); 
                         clearForm();
                     })
                     .catch(error => console.error('Error adding assignment:', error));
             } else {
-                // Update existing assignment
+                
                 fetch(`http://localhost:3001/api/assignments/${editingId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
@@ -293,7 +293,7 @@
                     })
                     .then(data => {
                         alert('Assignment updated successfully');
-                        fetchAndRenderTable(); // Refresh the table
+                        fetchAndRenderTable(); 
                         clearForm();
                     })
                     .catch(error => console.error('Error updating assignment:', error));
@@ -323,7 +323,7 @@
                     })
                     .then(data => {
                         alert('Assignment deleted successfully');
-                        fetchAndRenderTable(); // Refresh the table
+                        fetchAndRenderTable(); 
                     })
                     .catch(error => console.error('Error deleting assignment:', error));
             }
@@ -396,7 +396,7 @@
         }
 
         function populateSoldierDropdown() {
-            fetch('http://localhost:3001/api/soldiers') // Replace with the actual API endpoint for soldiers
+            fetch('http://localhost:3001/api/soldiers') 
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch soldiers');
@@ -413,7 +413,7 @@
         }
 
         function populateEquipmentDropdown() {
-            fetch('http://localhost:3001/api/equipment') // Replace with the actual API endpoint for equipment
+            fetch('http://localhost:3001/api/equipment') 
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch equipment');
