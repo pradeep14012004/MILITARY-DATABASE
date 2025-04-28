@@ -1,9 +1,8 @@
 -- Create the database
-DROP DATABASE MILITARY;
 CREATE DATABASE MILITARY;
 USE MILITARY;
 
-DROP TABLE IF EXISTS units;
+
 
 CREATE TABLE units (
     unit_id INT PRIMARY KEY,
@@ -12,20 +11,9 @@ CREATE TABLE units (
     location VARCHAR(100),
     commander_id INT DEFAULT NULL
 );
--- Step 1: Drop foreign key in soldiers
-ALTER TABLE soldiers DROP FOREIGN KEY soldiers_ibfk_1;
 
--- Step 2: Modify the column in units
-ALTER TABLE units MODIFY unit_id INT NOT NULL;
+SELECT *FROM units;
 
--- Step 3: Recreate the foreign key constraint
-ALTER TABLE soldiers 
-ADD CONSTRAINT soldiers_ibfk_1 
-FOREIGN KEY (unit_id) REFERENCES units(unit_id);
-
-
-
-DROP TABLE IF EXISTS soldiers;
 
 CREATE TABLE soldiers (
     serviceid INT PRIMARY KEY AUTO_INCREMENT,
@@ -43,10 +31,7 @@ CREATE TABLE soldiers (
     last_known_location VARCHAR(100) DEFAULT NULL,
     FOREIGN KEY (unit_id) REFERENCES units(unit_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-INSERT INTO units (unit_id, unit_name, unit_type, location, commander_id)
-VALUES (1, 'Alpha Unit', 'Infantry', 'New York', NULL);
-INSERT INTO soldiers (first_name, last_name, date_of_birth, gender, `rank`, branch, unit_id, enlistment_date, discharge_date, status, blood_type, last_known_location)
-VALUES ('John', 'Doe', '1990-01-01', 'M', 'Captain', 'Infantry', 1, '2020-01-01', NULL, 'Active', 'O+', 'New York');
+ALTER TABLE soldiers DROP FOREIGN KEY soldiers_ibfk_1;
 ALTER TABLE soldiers
 ADD CONSTRAINT fk_soldiers_unit
 FOREIGN KEY (unit_id)
@@ -54,11 +39,10 @@ REFERENCES units(unit_id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 describe soldiers;
-SHOW CREATE TABLE soldiers;
-DELETE FROM units WHERE unit_id = 1;
-select * FROM soldiers;
+SELECT *FROM soldiers;
+
 -- 3. Equipment table
-DROP TABLE IF EXISTS equipment;
+
 CREATE TABLE equipment (
     equipment_id INT PRIMARY KEY auto_increment,
     type VARCHAR(50) NOT NULL,
@@ -68,7 +52,6 @@ CREATE TABLE equipment (
 
 SELECT *FROM equipment;
 
--- 4. Assignments table
 CREATE TABLE assignments (
     assignment_id INT PRIMARY KEY AUTO_INCREMENT,
     serviceid INT NOT NULL,
@@ -81,8 +64,6 @@ CREATE TABLE assignments (
 );
 SELECT *FROM assignments;
 
--- 5. Missions table
-DROP TABLE IF EXISTS missions;
 
 CREATE TABLE missions (
     mission_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -96,41 +77,27 @@ CREATE TABLE missions (
 );
 
 select * FROM missions;
--- 6. Deployments table
-CREATE TABLE deployments (
-    deployment_id INT PRIMARY KEY AUTO_INCREMENT,
-    serviceid INT NOT NULL,
-    location VARCHAR(100) NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE DEFAULT NULL,
-    mission_id INT DEFAULT NULL,
-    FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (mission_id) REFERENCES missions(mission_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
 
--- 7. Training Courses table
+
+DROP TABLE IF EXISTS training_courses;
 CREATE TABLE training_courses (
-    course_id INT PRIMARY KEY AUTO_INCREMENT,
+    course_id INT PRIMARY KEY auto_increment,
     course_name VARCHAR(100) NOT NULL,
+    serviceid INT NOT NULL,
     duration_days INT NOT NULL,
     instructor_id INT NOT NULL,
-    FOREIGN KEY (instructor_id) REFERENCES soldiers(serviceid)
+    institute VARCHAR(255) NOT NULL,
+    FOREIGN KEY (instructor_id) REFERENCES soldiers(serviceid),
+    FOREIGN KEY (`serviceid`) REFERENCES `soldiers` (`serviceid`)
+ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- 8. Qualifications table
-CREATE TABLE qualifications (
-    qualification_id INT PRIMARY KEY AUTO_INCREMENT,
-    serviceid INT NOT NULL,
-    course_id INT NOT NULL,
-    date_completed DATE NOT NULL,
-    score DECIMAL(5,2) DEFAULT NULL,
-    FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES training_courses(course_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
+SELECT *FROM training_courses;
 
--- 9. Medical Records table
+
+DROP TABLE IF EXISTS med_table;
 CREATE TABLE medical_records (
-    record_id INT PRIMARY KEY AUTO_INCREMENT,
+    record_id INT PRIMARY KEY auto_increment,
     serviceid INT NOT NULL,
     blood_type ENUM('A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-') DEFAULT NULL,
     allergies TEXT DEFAULT NULL,
@@ -138,40 +105,9 @@ CREATE TABLE medical_records (
     date_recorded DATE NOT NULL DEFAULT (CURRENT_DATE),
     FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE
 );
+SELECT *FROM medical_records;
 
--- 10. Injury Reports table
-CREATE TABLE injury_reports (
-    injury_id INT PRIMARY KEY AUTO_INCREMENT,
-    serviceid INT NOT NULL,
-    date DATE NOT NULL,
-    description TEXT NOT NULL,
-    severity ENUM('Minor', 'Moderate', 'Severe') DEFAULT NULL,
-    FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE
-);
 
--- 11. Promotions table
-CREATE TABLE promotions (
-    promotion_id INT PRIMARY KEY AUTO_INCREMENT,
-    serviceid INT NOT NULL,
-    old_rank VARCHAR(50) NOT NULL,
-    new_rank VARCHAR(50) NOT NULL,
-    date_promoted DATE NOT NULL,
-    FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- 12. Transfers table
-CREATE TABLE transfers (
-    transfer_id INT PRIMARY KEY AUTO_INCREMENT,
-    serviceid INT NOT NULL,
-    from_unit_id INT NOT NULL,
-    to_unit_id INT NOT NULL,
-    date_transferred DATE NOT NULL,
-    FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (from_unit_id) REFERENCES units(unit_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (to_unit_id) REFERENCES units(unit_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- 13. Dependents table
 CREATE TABLE dependents (
     dependent_id INT PRIMARY KEY AUTO_INCREMENT,
     serviceid INT NOT NULL,
@@ -180,8 +116,9 @@ CREATE TABLE dependents (
     date_of_birth DATE DEFAULT NULL,
     FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE
 );
+SELECT *FROM dependents;
 
--- 14. Payroll table
+
 CREATE TABLE payroll (
     payroll_id INT PRIMARY KEY AUTO_INCREMENT,
     serviceid INT NOT NULL,
@@ -191,6 +128,12 @@ CREATE TABLE payroll (
     net_pay DECIMAL(10,2) GENERATED ALWAYS AS (base_salary + allowances) STORED,
     FOREIGN KEY (serviceid) REFERENCES soldiers(serviceid) ON DELETE CASCADE ON UPDATE CASCADE
 );
-SHOW TABLE
+ALTER TABLE payroll MODIFY month VARCHAR(7);
+SELECT *FROM payroll;
+
+SHOW TABLES;
+
+WHERE soldiers.serviceid = 1;
+
 
 -- Done
