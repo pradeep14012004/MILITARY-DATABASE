@@ -9,14 +9,14 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1c1c1c; 
-            color: #fff; 
+            background-color: #1c1c1c; /* Dark background */
+            color: #fff; /* White text */
         }
 
         .container {
             max-width: 800px;
             margin: 20px auto;
-            background-color: #2b2b2b; 
+            background-color: #2b2b2b; /* Darker container background */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -29,7 +29,7 @@
         }
 
         .form-container {
-            background-color: #333; 
+            background-color: #333; /* Form background */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -167,7 +167,7 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                
+                <!-- Equipment rows will be inserted here -->
             </tbody>
         </table>
     </div>
@@ -177,10 +177,10 @@
         let currentId = Math.max(...equipments.map(e => e.equipment_id), 0) + 1;
         let editingId = null;
 
-       
+        // Initialize form
         document.getElementById('equipmentForm').addEventListener('submit', handleSubmit);
 
-        
+        // Render initial data
         fetchAndRenderTable();
 
         function handleSubmit(e) {
@@ -195,7 +195,7 @@
                 return;
             }
 
-            
+            // Determine whether to add or update equipment
             const method = editingId === null ? 'POST' : 'PUT';
             const url = editingId === null
                 ? 'http://localhost:3001/api/equipment'
@@ -214,8 +214,8 @@
                 })
                 .then(message => {
                     alert(message.message);
-                    fetchAndRenderTable(); 
-                    clearForm(); 
+                    fetchAndRenderTable(); // Refresh the table
+                    clearForm(); // Reset the form
                 })
                 .catch(error => console.error('Error saving equipment:', error));
         }
@@ -228,14 +228,15 @@
                 return;
             }
 
+            // Populate the form fields with the equipment's data
             document.getElementById('type').value = equipment.type;
             document.getElementById('serialNumber').value = equipment.serial_number;
             document.getElementById('status').value = equipment.status;
 
-            
+            // Set the editing ID
             editingId = id;
 
-            
+            // Update the button text to indicate editing mode
             document.getElementById('submitBtn').textContent = 'Update Equipment';
         }
 
@@ -252,7 +253,7 @@
                     })
                     .then(message => {
                         alert(message.message);
-                        fetchAndRenderTable(); 
+                        fetchAndRenderTable(); // Refresh the table
                     })
                     .catch(error => console.error('Error deleting equipment:', error));
             }
@@ -260,8 +261,8 @@
 
         function clearForm() {
             document.getElementById('equipmentForm').reset();
-            editingId = null; 
-            document.getElementById('submitBtn').textContent = 'Add Equipment'; 
+            editingId = null; // Reset the editing ID
+            document.getElementById('submitBtn').textContent = 'Add Equipment'; // Reset the button text
         }
 
         function fetchAndRenderTable() {
@@ -273,7 +274,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    equipments = data; 
+                    equipments = data; // Update the global equipment array
                     const tbody = document.getElementById('tableBody');
                     tbody.innerHTML = '';
 

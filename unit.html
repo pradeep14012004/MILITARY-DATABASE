@@ -23,32 +23,32 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        
+        /* General Styles */
         body {
-            background-color: #000; 
-            color: #fff; 
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
             line-height: 1.6;
             padding: 20px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
         
-        
+        /* Header */
         header {
-            background-color: #111; 
-            color: #fff; 
+            background-color: #111; /* Darker black for header */
+            color: #fff; /* White text */
             padding: 1rem;
             border-radius: 5px;
             margin-bottom: 2rem;
             text-align: center;
         }
         
-       
+        /* Tabs */
         .tabs {
             display: flex;
             margin-bottom: 1rem;
@@ -58,23 +58,23 @@
             flex: 1;
             padding: 10px;
             text-align: center;
-            background-color: #222; 
-            color: #fff; 
+            background-color: #222; /* Dark gray for inactive tabs */
+            color: #fff; /* White text */
             cursor: pointer;
-            border: 1px solid #444; 
+            border: 1px solid #444; /* Border for tabs */
             transition: background-color 0.3s;
         }
         
         .tab.active {
-            background-color: #444; 
-            color: #fff;
+            background-color: #444; /* Slightly lighter gray for active tab */
+            color: #fff; /* White text */
         }
         
         .tab:hover:not(.active) {
-            background-color: #333; 
+            background-color: #333; /* Hover effect for inactive tabs */
         }
         
-     
+        /* Tab Content */
         .tab-content {
             display: none;
         }
@@ -83,28 +83,28 @@
             display: block;
         }
         
-       
+        /* Forms */
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #fff; 
+            color: #fff; /* White text for labels */
         }
         
         input, select {
             width: 100%;
             padding: 8px;
-            border: 1px solid #444; 
+            border: 1px solid #444; /* Dark border */
             border-radius: 4px;
             font-size: 16px;
-            background-color: #222; 
-            color: #fff; 
+            background-color: #222; /* Dark background for inputs */
+            color: #fff; /* White text for inputs */
         }
         
         button {
             padding: 10px 15px;
-            background-color: #444; 
-            color: #fff; 
+            background-color: #444; /* Dark button background */
+            color: #fff; /* White text */
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -113,70 +113,71 @@
         }
         
         button:hover {
-            background-color: #555; 
+            background-color: #555; /* Lighter gray on hover */
         }
         
         .btn-danger {
-            background-color: #d32f2f; 
+            background-color: #d32f2f; /* Red for danger buttons */
         }
         
         .btn-danger:hover {
-            background-color: #b71c1c; 
+            background-color: #b71c1c; /* Darker red on hover */
         }
         
         .btn-success {
-            background-color: #388E3C; 
+            background-color: #388E3C; /* Green for success buttons */
         }
         
         .btn-success:hover {
-            background-color: #2E7D32; 
+            background-color: #2E7D32; /* Darker green on hover */
         }
         
-        
+        /* Table */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: #222; 
-            color: #fff; 
+            background-color: #222; /* Dark background for table */
+            color: #fff; /* White text for table */
         }
         
         th, td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #444; 
+            border-bottom: 1px solid #444; /* Darker border for rows */
         }
         
         th {
-            background-color: #333; 
-            color: #fff; 
+            background-color: #333; /* Darker header background */
+            color: #fff; /* White text for headers */
         }
         
         tr:nth-child(even) {
-            background-color: #2a2a2a; 
+            background-color: #2a2a2a; /* Slightly lighter gray for even rows */
         }
         
         tr:hover {
-            background-color: #333; 
+            background-color: #333; /* Hover effect for rows */
         }
         
-        
+        /* Notification */
         .notification {
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 4px;
-            color: #fff; 
+            color: #fff; /* White text */
             display: none;
         }
         
         .notification.success {
-            background-color: #388E3C; 
+            background-color: #388E3C; /* Green for success notifications */
         }
         
         .notification.error {
-            background-color: #d32f2f; 
+            background-color: #d32f2f; /* Red for error notifications */
         }
         
+        /* Responsive Design */
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -206,7 +207,7 @@
             <div class="tab" data-tab="hierarchy">Unit Hierarchy</div>
         </div>
         
-        
+        <!-- View Units Tab -->
         <div class="tab-content active" id="view-tab">
             <div class="table-container">
                 <h2>Military Units</h2>
@@ -223,12 +224,13 @@
                         </tr>
                     </thead>
                     <tbody id="units-data">
-                     
+                        <!-- Data will be inserted here -->
                     </tbody>
                 </table>
             </div>
         </div>
-     
+        
+        <!-- Add Unit Tab -->
         <div class="tab-content" id="add-tab">
             <h2>Add New Military Unit</h2>
             <form id="add-unit-form">
@@ -282,14 +284,14 @@
             </form>
         </div>
         
-        
+        <!-- Edit Unit Tab -->
         <div class="tab-content" id="edit-tab">
             <h2>Edit Military Unit</h2>
             <div class="form-group">
                 <label for="edit-select-unit">Select Unit to Edit:</label>
                 <select id="edit-select-unit">
                     <option value="">-- Select a Unit --</option>
-                   
+                    <!-- Units will be populated dynamically -->
                 </select>
             </div>
             
@@ -344,19 +346,19 @@
             </form>
         </div>
         
-       
+        <!-- Delete Unit Tab -->
         <div class="tab-content" id="delete-tab">
             <h2>Delete Military Unit</h2>
             <div class="form-group">
                 <label for="delete-select-unit">Select Unit to Delete:</label>
                 <select id="delete-select-unit">
                     <option value="">-- Select a Unit --</option>
-                   
+                    <!-- Units will be populated dynamically -->
                 </select>
             </div>
             
             <div id="unit-to-delete-info" class="form-group" style="margin-top: 20px;">
-              
+                <!-- Unit info will be displayed here -->
             </div>
             
             <div class="form-group" id="delete-warning" style="display: none; color: var(--danger-color);">
@@ -368,26 +370,26 @@
             <button id="confirm-delete" class="btn-danger">Confirm Delete</button>
         </div>
         
-        
+        <!-- Unit Hierarchy Tab -->
         <div class="tab-content" id="hierarchy-tab">
             <h2>Unit Hierarchy</h2>
             <div class="unit-hierarchy">
                 <div class="tree-view" id="hierarchy-tree">
-                   -
+                    <!-- Hierarchy will be displayed here -->
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        
+        // Mock database for units
         let units = [];
         let nextUnitId = 1;
         
-        
+        // Mock database for personnel (for commander selection)
         let personnel = [];
         
-      
+        // Add personnel dynamically based on user input
         function addPersonnel(rank, name) {
             const newPersonnel = {
             id: personnel.length + 1,
@@ -397,7 +399,7 @@
             personnel.push(newPersonnel);
         }
         
-       
+        // Utility functions
         function showNotification(message, type) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -408,29 +410,30 @@
                 notification.style.display = 'none';
             }, 5000);
         }
-       
+        
+        // Tab functionality
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                
+                // Remove active class from all tabs and tab contents
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 
-            
+                // Add active class to clicked tab and corresponding content
                 tab.classList.add('active');
                 const tabName = tab.getAttribute('data-tab');
                 document.getElementById(`${tabName}-tab`).classList.add('active');
                 
-                
+                // If hierarchy tab, refresh the hierarchy view
                 if (tabName === 'hierarchy') {
                     renderUnitHierarchy();
                 }
             });
         });
         
-      
+        // Refresh units table
         function refreshUnitsTable() {
             const tableBody = document.getElementById('units-data');
-            tableBody.innerHTML = ''; 
+            tableBody.innerHTML = ''; // Clear the table before repopulating
 
             units.forEach((unit) => {
                 const row = document.createElement('tr');
@@ -453,7 +456,7 @@
             });
         }
         
-        
+        // View unit details
         function viewUnitDetails(unitId) {
             const unit = units.find(u => u.unit_id === unitId);
             if (!unit) return;
@@ -467,17 +470,17 @@
             `);
         }
         
-       
+        // Update select options in add, edit and delete forms
         function updateSelectOptions() {
             const editSelectUnit = document.getElementById('edit-select-unit');
             const deleteSelectUnit = document.getElementById('delete-select-unit');
             
-           
+            // Clear existing options except the first one
             editSelectUnit.innerHTML = '<option value="">-- Select a Unit --</option>';
             deleteSelectUnit.innerHTML = '<option value="">-- Select a Unit --</option>';
             
             units.forEach(unit => {
-          
+                // Add to unit selection dropdowns
                 const unitOption = document.createElement('option');
                 unitOption.value = unit.unit_id;
                 unitOption.textContent = `${unit.unit_id} - ${unit.unit_name} (${unit.unit_type})`;
@@ -489,27 +492,27 @@
             });
         }
         
-       
+        // Check for circular reference in parent-child relationship
         function wouldCreateCircularReference(unitId, parentId) {
-            
+            // If no parent, there's no circular reference
             if (!parentId) return false;
             
-            
+            // If the parent is the same as the unit, it's a circular reference
             if (unitId === parentId) return true;
             
-           
+            // Check if any ancestor of the parent is the unit
             let currentParentId = parentId;
             const visited = new Set();
             
             while (currentParentId) {
-               
+                // If we've seen this parent before, we have a cycle
                 if (visited.has(currentParentId)) return true;
                 visited.add(currentParentId);
                 
-               
+                // If the current parent is the unit, we have a circular reference
                 if (currentParentId === unitId) return true;
                 
-               
+                // Move up to the parent's parent
                 const parentUnit = units.find(u => u.unit_id === currentParentId);
                 if (!parentUnit) break;
                 
@@ -519,14 +522,14 @@
             return false;
         }
         
-        
+        // Find all descendant unit IDs
         function findAllDescendants(unitId) {
             const descendants = [];
             
-           
+            // Find direct children
             const directChildren = units.filter(u => u.parent_unit_id === unitId);
             
-           
+            // For each child, add it and its descendants
             directChildren.forEach(child => {
                 descendants.push(child.unit_id);
                 const childDescendants = findAllDescendants(child.unit_id);
@@ -536,12 +539,12 @@
             return descendants;
         }
         
-       
+        // Render unit hierarchy as a tree
         function renderUnitHierarchy() {
             const treeContainer = document.getElementById('hierarchy-tree');
             treeContainer.innerHTML = '';
             
-           
+            // Find top-level units (no parent)
             const topLevelUnits = units.filter(u => !u.parent_unit_id);
             
             if (topLevelUnits.length === 0) {
@@ -554,7 +557,8 @@
             topLevelUnits.forEach(unit => {
                 const li = document.createElement('li');
                 li.textContent = `${unit.unit_name} (${unit.unit_type})`;
-              
+                
+                // Recursively add children
                 addChildUnits(li, unit.unit_id);
                 
                 ul.appendChild(li);
@@ -563,7 +567,7 @@
             treeContainer.appendChild(ul);
         }
         
-        
+        // Helper function to add child units to the hierarchy tree
         function addChildUnits(parentElement, parentUnitId) {
             const childUnits = units.filter(u => u.parent_unit_id === parentUnitId);
             
@@ -574,7 +578,7 @@
                     const li = document.createElement('li');
                     li.textContent = `${unit.unit_name} (${unit.unit_type})`;
                     
-                    
+                    // Recursively add children
                     addChildUnits(li, unit.unit_id);
                     
                     ul.appendChild(li);
@@ -584,7 +588,7 @@
             }
         }
         
-      
+        // Add unit form submission
         document.getElementById('add-unit-form').addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -609,13 +613,13 @@
                 })
                 .then((message) => {
                     alert(message);
-                    fetchUnits(); 
+                    fetchUnits(); // Refresh the table with the updated data
                     document.getElementById('add-unit-form').reset(); // Clear the form
                 })
                 .catch((error) => console.error('Error adding unit:', error));
         });
         
-        
+        // Edit unit selection change
         document.getElementById('edit-select-unit').addEventListener('change', (e) => {
             const unitId = parseInt(e.target.value);
             if (!unitId) return;
@@ -630,7 +634,7 @@
             }
         });
         
-      
+        // Edit unit form submission
         document.getElementById('edit-unit-form').addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -655,12 +659,12 @@
                 })
                 .then((message) => {
                     alert(message);
-                    fetchUnits(); 
+                    fetchUnits(); // Refresh the table with the updated data
                 })
                 .catch((error) => console.error('Error editing unit:', error));
         });
         
-        
+        // Delete unit selection change
         document.getElementById('delete-select-unit').addEventListener('change', (e) => {
             const unitId = parseInt(e.target.value);
             if (!unitId) return;
@@ -677,7 +681,7 @@
             }
         });
 
-      
+        // Confirm delete button
         document.getElementById('confirm-delete').addEventListener('click', () => {
             const unitId = parseInt(document.getElementById('delete-select-unit').value);
 
@@ -697,14 +701,14 @@
                 })
                 .then((message) => {
                     alert(message);
-                    fetchUnits();
+                    fetchUnits(); // Refresh the table with the updated data
                 })
                 .catch((error) => console.error('Error deleting unit:', error));
         });
 
-        
+        // Fetch units from the server
         function fetchUnits() {
-            fetch('http://localhost:3001/api/units') 
+            fetch('http://localhost:3001/api/units') // Replace with your backend URL
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch units');
@@ -712,20 +716,20 @@
                     return response.json();
                 })
                 .then((data) => {
-                    units = data; 
-                    refreshUnitsTable(); 
-                    updateSelectOptions(); 
-                    renderUnitHierarchy(); 
+                    units = data; // Update the global `units` array
+                    refreshUnitsTable(); // Refresh the table with the fetched data
+                    updateSelectOptions(); // Update dropdowns for edit/delete
+                    renderUnitHierarchy(); // Update the hierarchy view
                 })
                 .catch((error) => console.error('Error fetching units:', error));
         }
 
- 
-        document.querySelector('.tab[data-tab="view"]').click(); 
-        fetchUnits();
+        // Initial setup
+        document.querySelector('.tab[data-tab="view"]').click(); // Default to view tab
+        fetchUnits(); // Fetch units from the server
 
         updateSelectOptions();
-        renderUnitHierarchy(); 
+        renderUnitHierarchy(); // Initial render of the hierarchy tree
 
     </script>
 </body>
